@@ -26,7 +26,7 @@ const writing={
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function stage(v=data.bond){return v<20?['冷淡','她正用挑剔的目光审视你。']:v<40?['生疏','关系有点僵，认真学习能慢慢挽回。']:v<70?['渐渐熟悉','她已经开始期待你的到来。']:v<90?['心动','她看你的眼神变得格外亲昵。']:['特别关系','下课以后，她只想多留你一会儿。']}
 function mood(v=data.bond){return v<20?'disdain':v>=70?'affection':'neutral'}
-function asset(s,e=mood()){if(extraSkins.includes(s))return`assets/${s}-${e}.png`;if(s==='noir'&&['neutral','affection'].includes(e))return`assets/noir-${e}-v2.png`;if(['scut','noir','crimson','ivory','amethyst','maid'].includes(s))return`assets/${s}-${e}.png`;if(e==='affection'||e==='disdain')return`assets/${s==='classic'?'classic':s}-${e}.png`;return`assets/${s==='classic'?'':s+'-'}neutral.webp`}
+function asset(s,e=mood()){if(extraSkins.includes(s))return`assets/${s}-${e}.png?v=2`;if(s==='noir'&&['neutral','affection'].includes(e))return`assets/noir-${e}-v2.png`;if(['scut','noir','crimson','ivory','amethyst','maid'].includes(s))return`assets/${s}-${e}.png`;if(e==='affection'||e==='disdain')return`assets/${s==='classic'?'classic':s}-${e}.png`;return`assets/${s==='classic'?'':s+'-'}neutral.webp`}
 function bondAsset(s){return bondSkins[s]||asset(s)}
 function currentSkin(){try{return JSON.parse(localStorage.getItem('neko-classroom-v1')||'{}').skin||'classic'}catch{return'classic'}}
 function log(text){data.logs.unshift(text);data.logs=data.logs.slice(0,5)}
