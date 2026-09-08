@@ -14,7 +14,7 @@ const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&g
 function toast(s){$('toast').textContent=s;$('toast').style.display='block';clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').style.display='none',2600)}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({...records,level,skin}))}catch{toast('浏览器无法保存记录，本次仍可继续学习。')}}
 const skinName={classic:'森系学院',pink:'草莓绒绒',summer:'晴海假日',noir:'夜猫黑丝',crimson:'绯夜猫铃',ivory:'白昼恋歌',amethyst:'紫罗兰韵',maid:'月夜女仆',scut:'华工校园特别服'};
-function asset(s,e='neutral'){if(s==='scut')return'assets/scut-neutral.png';if(['crimson','ivory','amethyst','maid'].includes(s))return`assets/${s}-neutral.png`;if(['affection','disdain'].includes(e))return`assets/${s==='classic'?'classic':s}-${e}.png`;if(s==='noir')return e==='sad'?'assets/noir-disdain.png':e==='neutral'?'assets/noir-neutral.png':'assets/noir-affection.png';return`assets/${s==='classic'?'':s+'-'}${e}.webp`}
+function asset(s,e='neutral'){if(['scut','noir','crimson','ivory','amethyst','maid'].includes(s))return`assets/${s}-${e}.png`;if(['affection','disdain'].includes(e))return`assets/${s==='classic'?'classic':s}-${e}.png`;return`assets/${s==='classic'?'':s+'-'}${e}.webp`}
 function bondMood(){const v=window.NekoModules?.affection?.()??45;return v<20?'disdain':v>=70?'affection':'neutral'}
 function portrait(e){expression=e;const shown=e==='neutral'?bondMood():e;$('teacherImage').src=asset(skin,shown);$('teacherImage').alt=`${skinName[skin]}小春老师 · ${{neutral:'微笑',happy:'开心',sad:'遗憾',shy:'害羞',affection:'亲昵',disdain:'挑逗式嫌弃'}[shown]}`}
 function say(s){$('dialogueText').textContent=s}
