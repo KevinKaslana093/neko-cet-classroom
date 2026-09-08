@@ -25,5 +25,20 @@
 .reward-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.reward-choices button{border:1px solid #d6b5bf;border-radius:7px;background:#fff7f8;color:#77505d;padding:9px 5px;font-size:10px}.reward-choices button:disabled{opacity:.35}.unlocked-skins{margin-top:10px;font-size:10px;color:#9a7781;line-height:1.6}
 .redeem-box{margin:14px 0 20px;padding:14px;border:1px solid #d8c8b2;border-radius:12px;background:#f4eee2}.redeem-box label{display:block;margin-bottom:8px;font-size:12px;font-weight:bold}.redeem-box>div{display:flex;gap:8px}.redeem-box input{min-width:0;flex:1;border:1px solid #cfc4b1;border-radius:8px;background:#fffaf0;padding:11px 12px;text-transform:uppercase}.redeem-box button{border:0;border-radius:8px;background:var(--ink);color:#fffaf0;padding:10px 16px}.redeem-box small{display:block;margin-top:8px;color:#8e806d;font-size:10px}.redeem-box small.success{color:#47745c;font-weight:bold}.redeem-box small.error{color:#a34f52;font-weight:bold}@media(max-width:480px){.redeem-box>div{display:grid}.redeem-box button{width:100%}}
 .dev-badge{position:fixed;top:max(7px,env(safe-area-inset-top));right:10px;z-index:40;padding:6px 10px;border:1px solid #d7b95f;border-radius:999px;background:#2f2a20;color:#ffe9a3;box-shadow:0 4px 14px #201a1055;font-size:10px;font-weight:bold;letter-spacing:1px}body.dev-mode header{padding-top:22px;height:114px}@media(max-width:680px){body.dev-mode header{padding-top:31px;min-height:131px}}
-body[data-skin="noir"] #teacherImage[src$="noir-neutral.png"]{transform:scale(1.45);transform-origin:58% top}
+#galleryStage.cropped:not([data-skin="classic"]) #galleryImage{height:100%;transform:scale(1.7);transform-origin:center top}
+#galleryStage.cropped:is([data-skin="laceblack"],[data-skin="mintlace"],[data-skin="candy"],[data-skin="burgundy"]) #galleryImage{transform:none}
+
+/* New wardrobe designs use a complete master illustration and crop it consistently in class. */
+body:is(.laceblack,.mintlace,.candy,.burgundy) .teacher img{height:100%;transform-origin:center top}
+body:is(.laceblack,.mintlace,.candy,.burgundy) .bond-visual img{transform:none;transform-origin:center top}
+body:is(.laceblack,.mintlace,.candy,.burgundy)[data-expression="happy"] .teacher img{transform:translateY(-6px) scale(1.02);filter:brightness(1.07) drop-shadow(0 9px 8px #4f392526)}
+body:is(.laceblack,.mintlace,.candy,.burgundy)[data-expression="sad"] .teacher img{transform:translateY(5px);filter:saturate(.72) drop-shadow(0 9px 8px #4f392526)}
+body:is(.laceblack,.mintlace,.candy,.burgundy)[data-expression="shy"] .teacher img{transform:rotate(-1deg) scale(1.025);filter:saturate(1.08) drop-shadow(0 0 12px #e39aac55)}
+body:is(.laceblack,.mintlace,.candy,.burgundy)[data-expression="affection"] .teacher img{transform:scale(1.08);filter:brightness(1.05) saturate(1.08) drop-shadow(0 0 16px #df8eaa55)}
+body:is(.laceblack,.mintlace,.candy,.burgundy)[data-expression="disdain"] .teacher img{transform:translateX(8px);filter:saturate(.68) contrast(1.05) drop-shadow(0 9px 8px #4f392526)}
+body.laceblack{--paper:#eee9e7;--accent:#75545d}body.laceblack .scene{background:linear-gradient(125deg,#716b69,#cbbeb6 60%,#8c7472)}
+body.mintlace{--paper:#f0f7f3;--accent:#73a697}body.mintlace .scene{background:linear-gradient(125deg,#c8ddd4,#eef3e8 60%,#aacbc2)}
+body.candy{--paper:#fff2f5;--accent:#dc84a6}body.candy .scene{background:linear-gradient(125deg,#f2cbd8,#dceaf3 60%,#f2d5e4)}
+body.burgundy{--paper:#f5eded;--accent:#8f334a}body.burgundy .scene{background:linear-gradient(125deg,#6c4148,#c99da1 60%,#7b3948)}
+@media(max-width:680px){body:is(.laceblack,.mintlace,.candy,.burgundy) .bond-visual img{height:520px;transform:none}}
 @media(max-width:760px){.reward-choices{grid-template-columns:repeat(2,1fr)}}

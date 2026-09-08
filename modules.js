@@ -7,7 +7,8 @@ let data=blank();try{data={...data,...JSON.parse(localStorage.getItem(KEY)||'{}'
 if(!data.practice||typeof data.practice!=='object')data.practice={cet4:0,cet6:0};if(!Array.isArray(data.unlockedSkins))data.unlockedSkins=[];if(!Array.isArray(data.claimedMilestones))data.claimedMilestones=[];
 if(data.actionDay!==today()){data.actionDay=today();data.actionsUsed=0}
 let level='cet4',mode='reading',question=null,answered=false,timerStart=Date.now(),timerId;
-const rewardSkins={noir:'夜猫黑丝',crimson:'绯夜猫铃',ivory:'白昼恋歌',amethyst:'紫罗兰韵',maid:'月夜女仆'},allSkinNames={...rewardSkins,scut:'华工校园特别服'},bondSkins={pink:'assets/pink-bond-v1.png',summer:'assets/summer-bond-v2.png',noir:'assets/noir-bond-v1.png'},milestones=[70,80,90,95];
+const extraSkins=['laceblack','mintlace','candy','burgundy'];
+const rewardSkins={noir:'夜猫黑丝',crimson:'绯夜猫铃',ivory:'白昼恋歌',amethyst:'紫罗兰韵',maid:'月夜女仆',laceblack:'黑曜蕾影',mintlace:'薄荷蕾丝',candy:'糖果缎带',burgundy:'酒红夜曲'},allSkinNames={...rewardSkins,scut:'特别校服'},bondSkins={pink:'assets/pink-bond-v1.png',summer:'assets/summer-bond-v2.png',noir:'assets/noir-bond-v1.png',ivory:'assets/ivory-bond-v1.png'},milestones=[70,80,90,95];
 const writing={
  cet4:[
   ['校园生活','Write about one habit that makes college life more productive. Give reasons and an example.'],
@@ -25,7 +26,7 @@ const writing={
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}
 function stage(v=data.bond){return v<20?['冷淡','她正用挑剔的目光审视你。']:v<40?['生疏','关系有点僵，认真学习能慢慢挽回。']:v<70?['渐渐熟悉','她已经开始期待你的到来。']:v<90?['心动','她看你的眼神变得格外亲昵。']:['特别关系','下课以后，她只想多留你一会儿。']}
 function mood(v=data.bond){return v<20?'disdain':v>=70?'affection':'neutral'}
-function asset(s,e=mood()){if(['scut','noir','crimson','ivory','amethyst','maid'].includes(s))return`assets/${s}-${e}.png`;if(e==='affection'||e==='disdain')return`assets/${s==='classic'?'classic':s}-${e}.png`;return`assets/${s==='classic'?'':s+'-'}neutral.webp`}
+function asset(s,e=mood()){if(extraSkins.includes(s))return`assets/${s}-${e}.png`;if(s==='noir'&&['neutral','affection'].includes(e))return`assets/noir-${e}-v2.png`;if(['scut','noir','crimson','ivory','amethyst','maid'].includes(s))return`assets/${s}-${e}.png`;if(e==='affection'||e==='disdain')return`assets/${s==='classic'?'classic':s}-${e}.png`;return`assets/${s==='classic'?'':s+'-'}neutral.webp`}
 function bondAsset(s){return bondSkins[s]||asset(s)}
 function currentSkin(){try{return JSON.parse(localStorage.getItem('neko-classroom-v1')||'{}').skin||'classic'}catch{return'classic'}}
 function log(text){data.logs.unshift(text);data.logs=data.logs.slice(0,5)}
@@ -43,7 +44,7 @@ function renderPractice(){document.querySelectorAll('[data-practice]').forEach(b
 function open(view,newLevel){level=newLevel||level;if(view==='practice')renderPractice();if(view==='bond')renderBond()}
 document.querySelectorAll('[data-practice]').forEach(b=>b.onclick=()=>{mode=b.dataset.practice;renderPractice()});$('practiceNext').onclick=renderPractice;
 document.querySelectorAll('[data-bond-action]').forEach(b=>b.onclick=()=>{if(data.actionDay!==today()){data.actionDay=today();data.actionsUsed=0}if(data.actionsUsed>=3){$('bondBubble').textContent='今天的课后时间用完啦，明天再来找我。';return}const actions={praise:[4,'你认真地夸奖了小春。'],gift:[8,'猫爪饼干让她眼睛一亮。'],tease:[-6,'你故意在课堂上捣乱。'],ignore:[-9,'你转身冷落了她。']};data.actionsUsed++;const [delta,reason]=actions[b.dataset.bondAction];changeBond(delta,reason)});
-function redeem(){const code=$('redeemCode').value.trim().toUpperCase(),feedback=$('redeemFeedback');feedback.className='';if(code==='666666'){data.developerMode=true;log('已开启开发者模式');save();renderBond();window.dispatchEvent(new CustomEvent('neko-unlock',{detail:{developer:true}}));feedback.textContent='开发者模式已开启，全部衣装可用。';feedback.classList.add('success');$('redeemCode').value='';return}if(code!=='SCUT888'){feedback.textContent='兑换码不正确，请检查后重试。';feedback.classList.add('error');return}if(!data.unlockedSkins.includes('scut')){data.unlockedSkins.push('scut');log('兑换领取「华工校园特别服」');save();renderBond();window.dispatchEvent(new CustomEvent('neko-unlock',{detail:{skin:'scut'}}))}feedback.textContent='兑换成功！华工校园特别服已永久加入衣橱。';feedback.classList.add('success');$('redeemCode').value=''}
+function redeem(){const code=$('redeemCode').value.trim().toUpperCase(),feedback=$('redeemFeedback');feedback.className='';if(code==='666666'){data.developerMode=true;log('已开启开发者模式');save();renderBond();window.dispatchEvent(new CustomEvent('neko-unlock',{detail:{developer:true}}));feedback.textContent='开发者模式已开启，全部衣装可用。';feedback.classList.add('success');$('redeemCode').value='';return}if(code!=='SCUT888'){feedback.textContent='兑换码不正确，请检查后重试。';feedback.classList.add('error');return}if(!data.unlockedSkins.includes('scut')){data.unlockedSkins.push('scut');log('兑换领取「特别校服」');save();renderBond();window.dispatchEvent(new CustomEvent('neko-unlock',{detail:{skin:'scut'}}))}feedback.textContent='兑换成功！特别校服已永久加入衣橱。';feedback.classList.add('success');$('redeemCode').value=''}
 $('redeemButton').onclick=redeem;$('redeemCode').onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();redeem()}};
 document.querySelectorAll('[data-reward-skin]').forEach(b=>b.onclick=()=>{const slot=milestones.find(x=>data.bond>=x&&!data.claimedMilestones.includes(x)),s=b.dataset.rewardSkin;if(!slot||data.unlockedSkins.includes(s))return;data.claimedMilestones.push(slot);data.unlockedSkins.push(s);log(`解锁限定衣装「${rewardSkins[s]}」`);save();renderBond();window.dispatchEvent(new CustomEvent('neko-unlock',{detail:{skin:s}}))});
 window.addEventListener('neko-skin',e=>{$('bondPortrait').src=bondAsset(e.detail.skin)});
